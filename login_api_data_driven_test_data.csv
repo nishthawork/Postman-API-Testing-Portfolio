@@ -1,0 +1,6 @@
+username,password,expectedStatus,expectedMessage
+emilys,emilyspass,200,
+emilys,wrongpassword,400,Invalid credentials
+,emilyspass,400,Username and password required
+emilys,,400,Username and password required
+wronguser,emilyspass,400,Invalid credentials

@@ -1,0 +1,56 @@
+{
+  "info": {
+    "_postman_id": "49e00ea3-b637-4f9e-a91b-00ea17806db8",
+    "name": "Login API Testing",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "51731801",
+    "_collection_link": "https://go.postman.co/collection/51731801-49e00ea3-b637-4f9e-a91b-00ea17806db8?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Login - Data Driven",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "\r\nconst response = pm.response.json();\r\n\r\nconst expectedStatus = Number(pm.iterationData.get(\"expectedStatus\"));\r\nconst expectedMessage = pm.iterationData.get(\"expectedMessage\");\r\n\r\npm.test(\"Status code matches expected\", function () {\r\n    pm.response.to.have.status(expectedStatus);\r\n});\r\n\r\npm.test(\"Response is valid JSON\", function () {\r\n    pm.expect(response).to.be.an(\"object\");\r\n});\r\n\r\nif (expectedStatus === 200) {\r\n\r\n    pm.test(\"Access token is generated\", function () {\r\n        pm.expect(response.accessToken).to.be.a(\"string\").and.not.empty;\r\n    });\r\n\r\n    pm.test(\"Username is correct\", function () {\r\n        pm.expect(response.username).to.eql(\"emilys\");\r\n    });\r\n\r\n} else {\r\n\r\n    pm.test(\"Expected error message is returned\", function () {\r\n        pm.expect(response.message).to.eql(expectedMessage);\r\n    });\r\n\r\n    pm.test(\"Access token is not returned\", function () {\r\n        pm.expect(response).to.not.have.property(\"accessToken\");\r\n    });\r\n}\r\n"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"username\": \"{{username}}\",\r\n  \"password\": \"{{password}}\",\r\n  \"expiresInMins\": 30\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://dummyjson.com/auth/login",
+          "protocol": "https",
+          "host": [
+            "dummyjson",
+            "com"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
